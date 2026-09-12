@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encyclopédie des iOS</title>
+    <link rel="icon" type="image/png" href="favicon-ios.png">
+    <style>
+        :root {
+            --bg-color: #0b0b0e;
+            --card-bg: #16161a;
+            --accent-color: #0071e3;
+            --text-main: #f5f5f7;
+            --text-secondary: #86868b;
+            --border-color: #2c2c2e;
+        }
+
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif; 
+            background: linear-gradient(135deg, #0b0b0e 0%, #16161a 100%);
+            background-attachment: fixed;
+            margin: 0; 
+            padding: 20px; 
+            color: #f5f5f7;
+        }
+
+        .container { max-width: 1000px; margin: auto; }
+
+        /* Titre géant stylisé en lettres */
+        .site-title-letters {
+            text-align: center;
+            font-size: 3.5rem;
+            font-weight: 800;
+            letter-spacing: 16px;
+            text-transform: uppercase;
+            background: linear-gradient(90deg, #0071e3, #42a5f5, #9c27b0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            text-shadow: 0 10px 20px rgba(0, 113, 227, 0.2);
+        }
+        
+        header { 
+            background: rgba(22, 22, 26, 0.85); 
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white; 
+            padding: 25px; 
+            text-align: center; 
+            border-radius: 16px; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
+
+        header h1 { margin: 0 0 10px 0; font-size: 2rem; }
+        header p { margin: 0 0 20px 0; color: #a1a1a6; }
+
+        /* Barre de recherche */
+        .search-bar { text-align: center; margin-top: 15px; }
+        .search-bar input {
+            width: 80%;
+            max-width: 450px;
+            padding: 12px 20px;
+            border-radius: 20px;
+            border: 1px solid #333;
+            background-color: #1c1c21;
+            color: #fff;
+            outline: none;
+            font-size: 0.95rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            transition: border-color 0.2s;
+        }
+
+        .search-bar input:focus {
+            border-color: #0071e3;
+        }
+
+        .category { 
+            background: rgba(22, 22, 26, 0.85); 
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 20px; 
+            border-radius: 16px; 
+            margin-top: 25px; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3); 
+        }
+
+        .era-title {
+            color: #0071e3;
+            border-bottom: 2px solid #0071e3;
+            padding-bottom: 8px;
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        /* Grille des cartes ISO */
+        .iso-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .card {
+            background-color: #1c1c21;
+            border: 1px solid #2c2c30;
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 113, 227, 0.3);
+            border-color: #0071e3;
+        }
+
+        .card-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-info h3 {
+            margin: 0;
+            font-size: 1rem;
+            color: #f5f5f7;
+        }
+
+        .card-info span {
+            font-size: 0.8rem;
+            color: #86868b;
+            margin-top: 4px;
+        }
+
+        /* Boutons de navigation top */
+        .btn-nav-top {
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            transition: background 0.3s, transform 0.2s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Style Pop-up (Modale) */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: #1c1c21;
+            border: 1px solid #2c2c30;
+            border-radius: 16px;
+            padding: 25px;
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            position: relative;
+            animation: fadeIn 0.2s ease-out;
+            color: #f5f5f7;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-title {
+            font-size: 1.4rem;
+            color: #fff;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .modal-body {
+            font-size: 0.95rem;
+            color: #a1a1a6;
+            line-height: 1.5;
+            border-top: 1px solid #2c2c30;
+            padding-top: 15px;
+            margin-top: 10px;
+            text-align: left;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 12px;
+            right: 15px;
+            background: #2c2c30;
+            border: none;
+            color: #a1a1a6;
+            font-size: 1.2rem;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .close-btn:hover { background: #3a3a40; color: #fff; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Grand titre textuel avec effet de lettres stylisées -->
+    <div class="site-title-letters">I O S</div>
+
+    <header>
+        <h1>📱 Encyclopédie des iOS / iPadOS</h1>
+        <p>L'historique complet de toutes les versions de l'iPhone OS à aujourd'hui</p>
+        
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Rechercher une version (ex: iOS 18, iOS 7, iPhone OS 1)...">
+        </div>
+    </header>
+
+    <!-- SECTION CONTEMPORAINE ET IA (2024 - 2026) -->
+    <div class="category">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #0071e3; padding-bottom: 10px; margin-bottom: 15px;">
+            <h2 style="color: #0071e3; margin: 0; border-bottom: none;">Versions Contemporaines & IA (2024 - 2026)</h2>
+            
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <a href="https://eyden57185.github.io/macos-iso/" class="btn-nav-top" style="background-color: #000;">
+                    <img src="https://img.icons8.com/ios-filled/50/ffffff/mac-os.png" alt="Apple" style="height: 14px; width: 14px; margin-right: 6px;">
+                    🍏 Encyclopédie MacOS
+                </a>
+                <a href="https://eyden57185.github.io/tous-les-iphones/" class="btn-nav-top" style="background-color: #0071e3;">
+                    📱 Encyclopédie iPhone
+                </a>
+            </div>
+        </div>
+
+        <div class="iso-grid">
+            <div class="card" data-details="La toute dernière version en date, propulsée par le déploiement massif d'Apple Intelligence. Elle introduit des outils avancés de retouche photo par IA, le regroupement automatique par thèmes dans Safari et une interface repensée pour s'adapter aux nouveaux formats, comme l'iPhone Duo pliable.">
+                <div class="card-info">
+                    <h3>iOS 27</h3>
+                    <span>Sortie : 2026</span>
+                </div>
+            </div>
+
+            <div class="card" data-details="Marque une profonde évolution du système avec une personnalisation encore plus poussée des icônes d'applications et du Centre de contrôle.">
+                <div class="card-info">
+                    <h3>iOS 26</h3>
+                    <span>Sortie : 2025</span>
+                </div>
+            </div>
+
+            <div class="card" data-details="Arrivée d'Apple Intelligence, personnalisation libre de l'écran d'accueil avec coloration des icônes, refonte du Centre de contrôle, intégration du standard RCS dans Messages et application Mots de passe dédiée.">
+                <div class="card-info">
+                    <h3>iOS 18</h3>
+                    <span>Sortie : 2024</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION MATURITÉ ET PERSONNALISATION (2017 - 2023) -->
+    <div class="category">
+        <h2 class="era-title">Maturité & Personnalisation (2017 - 2023)</h2>
+        <div class="iso-grid">
+            <div class="card" data-details="Mode En veille (StandBy), affiches de contact personnalisées, partage AirDrop par rapprochement (NameDrop), widgets interactifs et l'application Journal.">
+                <div class="card-info">
+                    <h3>iOS 17</h3>
+                    <span>Sortie : 2023</span>
+                </div>
+            </div>
+
+            <div class="card" data-details="Refonte majeure de l'Écran de verrouillage (entièrement personnalisable avec widgets) et détourage automatique des photos d'un simple geste. Introduction de la Dynamic Island sur les modèles 14 Pro.">
+                <div class="card-info">
+                    <h3>iOS 16</h3>
+                    <span>Sortie : 2022</span>
+                </div>
+            </div>
+
+            <div class="card" data-details="Ajout des modes de concentration (Focus), de SharePlay dans FaceTime et de la fonction Texte en direct (Live Text).">
+                <div class="card-info">
+                    <h3>iOS 15</h3>
+                    <span>Sortie : 2021</span>
+                </div>
+            </div>
+
+            <div class="card" data-details="Introduction des Widgets sur l'écran d'accueil, de la Bibliothèque d'apps (App Library) et des App Clips.">
+                <div class="card-info">
+                    <h3>iOS 14</h3>
+                    <span>Sortie : 2020</span>
+                </div>
+            </div>
+
+            <div class="card" data-details="Arrivée tant attendue du Mode sombre généralisé, de l'outil « Connexion avec Apple » et scission avec l'iPad qui reçoit son propre système (iPadOS).">
+                <div class="card-info">
+                    <h3>iOS 13</h3>
+                    <span>Sortie : 2019</span>
+                </div>
+            </div>
+
+            <div class="card" data-details="Focus massif sur la stabilité, ajout de la fonctionnalité « Temps d'écran » (Screen Time), des Memojis et des raccourcis Siri.">
+                <div class="card-info">
+                    <h3>iOS 12</h3>
+                    <span>Sortie : 2018</span>
+                </div>
+            </div>
+
+            <div class="card" data-details="Introduction d'ARKit pour la réalité augmentée, refonte complète du Centre de contrôle et gestion optimisée pour les écrans à encoche de l'iPhone X.">
+                <div class="card-info">
+                    <h3>iOS 11</h3>
+                    <span>Sortie : 2017</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION TRANSITION ET DESIGN (2010 - 2016) -->
+    <div class="category">
+        <h2 class="era-title">Transition & Nouveau Design (2010 - 2016)</h2>
+        <div class="iso-grid">
+            <div class="card" data-details="Ouverture de Siri et d'iMessage aux développeurs tiers, refonte de l'application Musique, ajout de l'application Maison et fonction 'Soulever pour activer'.">
+                <div class="card-info">
+                    <h3>iOS 10</h3>
+                    <span>Sortie : 2016</span>
+                </div>
+            </div>
+
+            <div class="card" data-details="Amélioration des performances, mode économie d'énergie, refonte de l'application Notes et arrivée d'Apple Music.">
+                <div class="card-info">
+                    <h3>iOS 9</h3>
+                    <span>Sortie : 2015</span>
+                </div>
+            </div>
+
+            <div class="card" data-details="Intégration de Continuity (pour basculer facilement de l'iPhone au Mac), d'Apple Pay, d'iCloud Drive et du partage familial.">
+                <div class="card-info">
+                    <h3>iOS 8</h3>
+                    <span>Sortie : 2014</span>
+                </div>
+            </div>
+
+            <div class="card" data-details="Une révolution visuelle. Apple abandonne le skeuomorphisme (l'imitation des textures réelles) au profit du Flat Design (design plat). Introduction d'AirDrop et du Centre de contrôle.">
+                <div class="card-info">
+                    <h3>iOS 7</h3>
+                    <span>Sortie : 2013</span>
+                </div>
+            </div>
+
+            <div class="card" data-details="Remplacement de Google Maps par l'application native Apple Maps, intégration de Passbook (devenu Cartes/Wallet) et intégration native de Facebook.">
+                <div class="card-info">
+                    <h3>iOS 6</h3>
+                    <span>Sortie : 2012</span>
+                </div>
+            </div>
+
+            <div class="card" data-details="Introduction de Siri, de l'intégration d'iCloud, du Centre de notifications, de la messagerie iMessage et des mises à jour sans fil (OTA).">
+                <div class="card-info">
+                    <h3>iOS 5</h3>
+                    <span>Sortie : 2011</span>
+                </div>
+            </div>
+
+            <div class="card" data-details="Premier système officiellement nommé « iOS ». Il introduit le multitâche, les dossiers d'applications, le fond d'écran personnalisé et l'application FaceTime.">
+                <div class="card-info">
+                    <h3>iOS 4</h3>
+                    <span>Sortie : 2010</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION ORIGINES IPHONE OS (2007 - 2009) -->
+    <div class="category">
+        <h2 class="era-title">Les Origines (2007 - 2009)</h2>
+        <div class="iso-grid">
+            <div class="card" data-details="Ajoute des fonctions devenues indispensables comme le copier-coller, les MMS, la recherche Spotlight et les notifications push.">
+                <div class="card-info">
+                    <h3>iPhone OS 3</h3>
+                    <span>Sortie : 2009</span>
+                </div>
+            </div>
+
+            <div class="card" data-details="Marquée par l'arrivée historique de l'App Store, ouvrant la porte aux développeurs tiers, ainsi que le support de la 3G et du GPS.">
+                <div class="card-info">
+                    <h3>iPhone OS 2</h3>
+                    <span>Sortie : 2008</span>
+                </div>
+            </div>
+
+            <div class="card" data-details="La version initiale introduite par Steve Jobs avec l'iPhone original. Elle pose les bases de l'interface tactile (Multi-touch) mais ne possède pas encore de boutique d'applications.">
+                <div class="card-info">
+                    <h3>iPhone OS 1</h3>
+                    <span>Sortie : 2007</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Fenêtre Pop-up (Modale) -->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal-content">
+        <button class="close-btn" id="closeBtn">&times;</button>
+        <div class="modal-title" id="modalTitle">Nom de la version</div>
+        <div class="modal-body">
+            <p id="modalText">Détails de la version...</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Recherche dynamique
+    document.getElementById('searchInput').addEventListener('keyup', function() {
+        let filter = this.value.toLowerCase();
+        let cards = document.querySelectorAll('.card');
+
+        cards.forEach(card => {
+            let title = card.querySelector('h3').textContent.toLowerCase();
+            if (title.includes(filter)) {
+                card.style.display = "flex";
+            } else {
+                card.style.display = "none";
+            }
+        });
+    });
+
+    // Gestion du Pop-up Modal
+    const modalOverlay = document.getElementById('modalOverlay');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalText = document.getElementById('modalText');
+    const closeBtn = document.getElementById('closeBtn');
+
+    document.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('click', () => {
+            const title = card.querySelector('h3').textContent;
+            const details = card.getAttribute('data-details') || 'Informations bientôt disponibles.';
+
+            modalTitle.textContent = title;
+            modalText.textContent = details;
+            
+            modalOverlay.style.display = 'flex';
+        });
+    });
+
+    // Fermeture du Pop-up
+    closeBtn.addEventListener('click', () => {
+        modalOverlay.style.display = 'none';
+    });
+
+    modalOverlay.addEventListener('click', (e) => {
+        if (e.target === modalOverlay) {
+            modalOverlay.style.display = 'none';
+        }
+    });
+</script>
+
+</body>
+</html>
