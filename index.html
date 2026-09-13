@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Encyclopédie des iOS</title>
+    <title>Encyclopédie des iOS & iPadOS</title>
     <link rel="icon" type="image/png" href="favicon-ios.png">
     <style>
         :root {
@@ -53,6 +53,39 @@
 
         header h1 { margin: 0 0 10px 0; font-size: 2rem; }
         header p { margin: 0 0 20px 0; color: #a1a1a6; }
+
+        /* Onglets iOS / iPadOS */
+        .tab-container {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+
+        .tab-btn {
+            background-color: #1c1c21;
+            color: #a1a1a6;
+            border: 1px solid #2c2c30;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn:hover {
+            color: #fff;
+            border-color: #0071e3;
+        }
+
+        .tab-btn.active {
+            background-color: #0071e3;
+            color: #fff;
+            border-color: #0071e3;
+            box-shadow: 0 4px 12px rgba(0, 113, 227, 0.4);
+        }
 
         /* Barre de recherche */
         .search-bar { text-align: center; margin-top: 15px; }
@@ -221,14 +254,21 @@
 
 <div class="container">
     <!-- Grand titre textuel avec effet de lettres stylisées -->
-    <div class="site-title-letters">I O S</div>
+    <div class="site-title-letters">I O S & I P A D O S</div>
 
     <header>
-        <h1>📱 Encyclopédie des iOS / iPadOS</h1>
-        <p>L'historique complet de toutes les versions de l'iPhone OS à aujourd'hui</p>
+        <h1>📱 Encyclopédie des iOS & iPadOS</h1>
+        <p>L'historique complet des systèmes d'exploitation iPhone et iPad</p>
         
+        <!-- ONGLETS DE NAVIGATION -->
+        <div class="tab-container">
+            <button class="tab-btn active" data-type="all">🌐 Tous</button>
+            <button class="tab-btn" data-type="ios">📱 iOS (iPhone)</button>
+            <button class="tab-btn" data-type="ipados">📲 iPadOS (iPad)</button>
+        </div>
+
         <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="Rechercher une version (ex: iOS 18, iOS 7, iPhone OS 1)...">
+            <input type="text" id="searchInput" placeholder="Rechercher une version (ex: iOS 18, iPadOS 17, iPhone OS 1)...">
         </div>
     </header>
 
@@ -249,24 +289,45 @@
         </div>
 
         <div class="iso-grid">
-            <div class="card" data-details="La toute dernière version en date, propulsée par le déploiement massif d'Apple Intelligence. Elle introduit des outils avancés de retouche photo par IA, le regroupement automatique par thèmes dans Safari et une interface repensée pour s'adapter aux nouveaux formats, comme l'iPhone Duo pliable.">
+            <div class="card" data-system="ios" data-details="La toute dernière version en date, propulsée par le déploiement massif d'Apple Intelligence. Elle introduit des outils avancés de retouche photo par IA, le regroupement automatique par thèmes dans Safari et une interface repensée pour s'adapter aux nouveaux formats, comme l'iPhone Duo pliable.">
                 <div class="card-info">
                     <h3>iOS 27</h3>
-                    <span>Sortie : 2026</span>
+                    <span>iPhone • Sortie : 2026</span>
                 </div>
             </div>
 
-            <div class="card" data-details="Marque une profonde évolution du système avec une personnalisation encore plus poussée des icônes d'applications et du Centre de contrôle.">
+            <div class="card" data-system="ipados" data-details="Version iPadOS 27 optimisée pour les écrans géants et pliables avec gestion avancée du multitâche assistée par Apple Intelligence et fenêtrage pro.">
+                <div class="card-info">
+                    <h3>iPadOS 27</h3>
+                    <span>iPad • Sortie : 2026</span>
+                </div>
+            </div>
+
+            <div class="card" data-system="ios" data-details="Marque une profonde évolution du système avec une personnalisation encore plus poussée des icônes d'applications et du Centre de contrôle.">
                 <div class="card-info">
                     <h3>iOS 26</h3>
-                    <span>Sortie : 2025</span>
+                    <span>iPhone • Sortie : 2025</span>
                 </div>
             </div>
 
-            <div class="card" data-details="Arrivée d'Apple Intelligence, personnalisation libre de l'écran d'accueil avec coloration des icônes, refonte du Centre de contrôle, intégration du standard RCS dans Messages et application Mots de passe dédiée.">
+            <div class="card" data-system="ipados" data-details="Inaugure la nouvelle interface de gestion des widgets professionnels et des raccourcis Stage Manager améliorés pour iPad.">
+                <div class="card-info">
+                    <h3>iPadOS 26</h3>
+                    <span>iPad • Sortie : 2025</span>
+                </div>
+            </div>
+
+            <div class="card" data-system="ios" data-details="Arrivée d'Apple Intelligence, personnalisation libre de l'écran d'accueil avec coloration des icônes, refonte du Centre de contrôle, intégration du standard RCS dans Messages et application Mots de passe dédiée.">
                 <div class="card-info">
                     <h3>iOS 18</h3>
-                    <span>Sortie : 2024</span>
+                    <span>iPhone • Sortie : 2024</span>
+                </div>
+            </div>
+
+            <div class="card" data-system="ipados" data-details="Nouvelles fonctionnalités Apple Intelligence, refonte de la présentation des apps, application Calculatrice enfin intégrée avec Math Notes.">
+                <div class="card-info">
+                    <h3>iPadOS 18</h3>
+                    <span>iPad • Sortie : 2024</span>
                 </div>
             </div>
         </div>
@@ -276,52 +337,87 @@
     <div class="category">
         <h2 class="era-title">Maturité & Personnalisation (2017 - 2023)</h2>
         <div class="iso-grid">
-            <div class="card" data-details="Mode En veille (StandBy), affiches de contact personnalisées, partage AirDrop par rapprochement (NameDrop), widgets interactifs et l'application Journal.">
+            <div class="card" data-system="ios" data-details="Mode En veille (StandBy), affiches de contact personnalisées, partage AirDrop par rapprochement (NameDrop), widgets interactifs et l'application Journal.">
                 <div class="card-info">
                     <h3>iOS 17</h3>
-                    <span>Sortie : 2023</span>
+                    <span>iPhone • Sortie : 2023</span>
                 </div>
             </div>
 
-            <div class="card" data-details="Refonte majeure de l'Écran de verrouillage (entièrement personnalisable avec widgets) et détourage automatique des photos d'un simple geste. Introduction de la Dynamic Island sur les modèles 14 Pro.">
+            <div class="card" data-system="ipados" data-details="Personnalisation de l'écran de verrouillage adaptée à l'iPad, widgets interactifs, application Santé sur iPad et gestion des PDF avancée.">
+                <div class="card-info">
+                    <h3>iPadOS 17</h3>
+                    <span>iPad • Sortie : 2023</span>
+                </div>
+            </div>
+
+            <div class="card" data-system="ios" data-details="Refonte majeure de l'Écran de verrouillage (entièrement personnalisable avec widgets) et détourage automatique des photos d'un simple geste. Introduction de la Dynamic Island sur les modèles 14 Pro.">
                 <div class="card-info">
                     <h3>iOS 16</h3>
-                    <span>Sortie : 2022</span>
+                    <span>iPhone • Sortie : 2022</span>
                 </div>
             </div>
 
-            <div class="card" data-details="Ajout des modes de concentration (Focus), de SharePlay dans FaceTime et de la fonction Texte en direct (Live Text).">
+            <div class="card" data-system="ipados" data-details="Introduction de Stage Manager pour le multitâche en fenêtres superposées, application Météo dédiée et écran externe pris en charge.">
+                <div class="card-info">
+                    <h3>iPadOS 16</h3>
+                    <span>iPad • Sortie : 2022</span>
+                </div>
+            </div>
+
+            <div class="card" data-system="ios" data-details="Ajout des modes de concentration (Focus), de SharePlay dans FaceTime et de la fonction Texte en direct (Live Text).">
                 <div class="card-info">
                     <h3>iOS 15</h3>
-                    <span>Sortie : 2021</span>
+                    <span>iPhone • Sortie : 2021</span>
                 </div>
             </div>
 
-            <div class="card" data-details="Introduction des Widgets sur l'écran d'accueil, de la Bibliothèque d'apps (App Library) et des App Clips.">
+            <div class="card" data-system="ipados" data-details="Placement libre des widgets sur l'écran d'accueil, Bibliothèque d'apps sur iPad, Notes rapides et multitâche repensé avec menu dédié.">
+                <div class="card-info">
+                    <h3>iPadOS 15</h3>
+                    <span>iPad • Sortie : 2021</span>
+                </div>
+            </div>
+
+            <div class="card" data-system="ios" data-details="Introduction des Widgets sur l'écran d'accueil, de la Bibliothèque d'apps (App Library) et des App Clips.">
                 <div class="card-info">
                     <h3>iOS 14</h3>
-                    <span>Sortie : 2020</span>
+                    <span>iPhone • Sortie : 2020</span>
                 </div>
             </div>
 
-            <div class="card" data-details="Arrivée tant attendue du Mode sombre généralisé, de l'outil « Connexion avec Apple » et scission avec l'iPad qui reçoit son propre système (iPadOS).">
+            <div class="card" data-system="ipados" data-details="Prise en charge de la souris et du trackpad, widgets sur l'écran d'accueil et reconnaissance de l'écriture manuscrite avec Apple Pencil (Scribble).">
+                <div class="card-info">
+                    <h3>iPadOS 14</h3>
+                    <span>iPad • Sortie : 2020</span>
+                </div>
+            </div>
+
+            <div class="card" data-system="ios" data-details="Arrivée tant attendue du Mode sombre généralisé et de l'outil « Connexion avec Apple ».">
                 <div class="card-info">
                     <h3>iOS 13</h3>
-                    <span>Sortie : 2019</span>
+                    <span>iPhone • Sortie : 2019</span>
                 </div>
             </div>
 
-            <div class="card" data-details="Focus massif sur la stabilité, ajout de la fonctionnalité « Temps d'écran » (Screen Time), des Memojis et des raccourcis Siri.">
+            <div class="card" data-system="ipados" data-details="Première version scissionnée d'iOS spécialement dédiée à l'iPad : écran d'accueil plus dense, support des clés USB dans Fichiers et multitâche Slide Over/Split View avancé.">
+                <div class="card-info">
+                    <h3>iPadOS 13</h3>
+                    <span>iPad • Sortie : 2019</span>
+                </div>
+            </div>
+
+            <div class="card" data-system="ios" data-details="Focus massif sur la stabilité, ajout de la fonctionnalité « Temps d'écran » (Screen Time), des Memojis et des raccourcis Siri.">
                 <div class="card-info">
                     <h3>iOS 12</h3>
-                    <span>Sortie : 2018</span>
+                    <span>iPhone & iPad • Sortie : 2018</span>
                 </div>
             </div>
 
-            <div class="card" data-details="Introduction d'ARKit pour la réalité augmentée, refonte complète du Centre de contrôle et gestion optimisée pour les écrans à encoche de l'iPhone X.">
+            <div class="card" data-system="ios" data-details="Introduction d'ARKit pour la réalité augmentée, refonte complète du Centre de contrôle et nouveau Dock avec glisser-déposer pour iPad.">
                 <div class="card-info">
                     <h3>iOS 11</h3>
-                    <span>Sortie : 2017</span>
+                    <span>iPhone & iPad • Sortie : 2017</span>
                 </div>
             </div>
         </div>
@@ -331,52 +427,52 @@
     <div class="category">
         <h2 class="era-title">Transition & Nouveau Design (2010 - 2016)</h2>
         <div class="iso-grid">
-            <div class="card" data-details="Ouverture de Siri et d'iMessage aux développeurs tiers, refonte de l'application Musique, ajout de l'application Maison et fonction 'Soulever pour activer'.">
+            <div class="card" data-system="ios" data-details="Ouverture de Siri et d'iMessage aux développeurs tiers, refonte de l'application Musique, ajout de l'application Maison et fonction 'Soulever pour activer'.">
                 <div class="card-info">
                     <h3>iOS 10</h3>
-                    <span>Sortie : 2016</span>
+                    <span>iPhone & iPad • Sortie : 2016</span>
                 </div>
             </div>
 
-            <div class="card" data-details="Amélioration des performances, mode économie d'énergie, refonte de l'application Notes et arrivée d'Apple Music.">
+            <div class="card" data-system="ios" data-details="Amélioration des performances, mode économie d'énergie, refonte de l'application Notes, arrivée d'Apple Music et premier multitâche Split View pour iPad.">
                 <div class="card-info">
                     <h3>iOS 9</h3>
-                    <span>Sortie : 2015</span>
+                    <span>iPhone & iPad • Sortie : 2015</span>
                 </div>
             </div>
 
-            <div class="card" data-details="Intégration de Continuity (pour basculer facilement de l'iPhone au Mac), d'Apple Pay, d'iCloud Drive et du partage familial.">
+            <div class="card" data-system="ios" data-details="Intégration de Continuity (pour basculer facilement de l'iPhone au Mac), d'Apple Pay, d'iCloud Drive et du partage familial.">
                 <div class="card-info">
                     <h3>iOS 8</h3>
-                    <span>Sortie : 2014</span>
+                    <span>iPhone & iPad • Sortie : 2014</span>
                 </div>
             </div>
 
-            <div class="card" data-details="Une révolution visuelle. Apple abandonne le skeuomorphisme (l'imitation des textures réelles) au profit du Flat Design (design plat). Introduction d'AirDrop et du Centre de contrôle.">
+            <div class="card" data-system="ios" data-details="Une révolution visuelle. Apple abandonne le skeuomorphisme (l'imitation des textures réelles) au profit du Flat Design (design plat). Introduction d'AirDrop et du Centre de contrôle.">
                 <div class="card-info">
                     <h3>iOS 7</h3>
-                    <span>Sortie : 2013</span>
+                    <span>iPhone & iPad • Sortie : 2013</span>
                 </div>
             </div>
 
-            <div class="card" data-details="Remplacement de Google Maps par l'application native Apple Maps, intégration de Passbook (devenu Cartes/Wallet) et intégration native de Facebook.">
+            <div class="card" data-system="ios" data-details="Remplacement de Google Maps par l'application native Apple Maps, intégration de Passbook (devenu Cartes/Wallet) et intégration native de Facebook.">
                 <div class="card-info">
                     <h3>iOS 6</h3>
-                    <span>Sortie : 2012</span>
+                    <span>iPhone & iPad • Sortie : 2012</span>
                 </div>
             </div>
 
-            <div class="card" data-details="Introduction de Siri, de l'intégration d'iCloud, du Centre de notifications, de la messagerie iMessage et des mises à jour sans fil (OTA).">
+            <div class="card" data-system="ios" data-details="Introduction de Siri, de l'intégration d'iCloud, du Centre de notifications, de la messagerie iMessage et des mises à jour sans fil (OTA).">
                 <div class="card-info">
                     <h3>iOS 5</h3>
-                    <span>Sortie : 2011</span>
+                    <span>iPhone & iPad • Sortie : 2011</span>
                 </div>
             </div>
 
-            <div class="card" data-details="Premier système officiellement nommé « iOS ». Il introduit le multitâche, les dossiers d'applications, le fond d'écran personnalisé et l'application FaceTime.">
+            <div class="card" data-system="ios" data-details="Premier système officiellement nommé « iOS ». Il introduit le multitâche, les dossiers d'applications, le fond d'écran personnalisé et l'application FaceTime.">
                 <div class="card-info">
                     <h3>iOS 4</h3>
-                    <span>Sortie : 2010</span>
+                    <span>iPhone & iPad • Sortie : 2010</span>
                 </div>
             </div>
         </div>
@@ -386,24 +482,24 @@
     <div class="category">
         <h2 class="era-title">Les Origines (2007 - 2009)</h2>
         <div class="iso-grid">
-            <div class="card" data-details="Ajoute des fonctions devenues indispensables comme le copier-coller, les MMS, la recherche Spotlight et les notifications push.">
+            <div class="card" data-system="ios" data-details="Ajoute des fonctions devenues indispensables comme le copier-coller, les MMS, la recherche Spotlight et les notifications push.">
                 <div class="card-info">
                     <h3>iPhone OS 3</h3>
-                    <span>Sortie : 2009</span>
+                    <span>iPhone • Sortie : 2009</span>
                 </div>
             </div>
 
-            <div class="card" data-details="Marquée par l'arrivée historique de l'App Store, ouvrant la porte aux développeurs tiers, ainsi que le support de la 3G et du GPS.">
+            <div class="card" data-system="ios" data-details="Marquée par l'arrivée historique de l'App Store, ouvrant la porte aux développeurs tiers, ainsi que le support de la 3G et du GPS.">
                 <div class="card-info">
                     <h3>iPhone OS 2</h3>
-                    <span>Sortie : 2008</span>
+                    <span>iPhone • Sortie : 2008</span>
                 </div>
             </div>
 
-            <div class="card" data-details="La version initiale introduite par Steve Jobs avec l'iPhone original. Elle pose les bases de l'interface tactile (Multi-touch) mais ne possède pas encore de boutique d'applications.">
+            <div class="card" data-system="ios" data-details="La version initiale introduite par Steve Jobs avec l'iPhone original. Elle pose les bases de l'interface tactile (Multi-touch) mais ne possède pas encore de boutique d'applications.">
                 <div class="card-info">
                     <h3>iPhone OS 1</h3>
-                    <span>Sortie : 2007</span>
+                    <span>iPhone • Sortie : 2007</span>
                 </div>
             </div>
         </div>
@@ -422,20 +518,40 @@
 </div>
 
 <script>
-    // Recherche dynamique
-    document.getElementById('searchInput').addEventListener('keyup', function() {
-        let filter = this.value.toLowerCase();
+    let currentTab = 'all';
+
+    // Gestion des Onglets (Tous / iOS / iPadOS)
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            tabBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentTab = btn.getAttribute('data-type');
+            filterCards();
+        });
+    });
+
+    // Recherche dynamique et filtrage
+    document.getElementById('searchInput').addEventListener('keyup', filterCards);
+
+    function filterCards() {
+        let searchFilter = document.getElementById('searchInput').value.toLowerCase();
         let cards = document.querySelectorAll('.card');
 
         cards.forEach(card => {
             let title = card.querySelector('h3').textContent.toLowerCase();
-            if (title.includes(filter)) {
+            let systemType = card.getAttribute('data-system');
+
+            let matchesSearch = title.includes(searchFilter);
+            let matchesTab = (currentTab === 'all') || (systemType === currentTab);
+
+            if (matchesSearch && matchesTab) {
                 card.style.display = "flex";
             } else {
                 card.style.display = "none";
             }
         });
-    });
+    }
 
     // Gestion du Pop-up Modal
     const modalOverlay = document.getElementById('modalOverlay');
